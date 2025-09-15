@@ -992,7 +992,7 @@ const MainApp = () => {
       if (editingPerson) {
         // Update existing person
         console.log('📝 Updating person:', editingPerson.id);
-        await axios.put(`${API_URL}/persons/${editingPerson.id}`, personData, config);
+        await axios.put(`${API_URL}/api/persons/${editingPerson.id}`, personData, config);
         Alert.alert('✅ Erfolg', 'Person wurde erfolgreich aktualisiert!');
       } else {
         // Create new person
