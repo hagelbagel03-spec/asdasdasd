@@ -845,6 +845,12 @@ const MainApp = () => {
     }
   }, [activeTab]);
 
+  useEffect(() => {
+    if (showIncidentsScreen) {
+      loadAllIncidents();
+    }
+  }, [showIncidentsScreen]);
+
   const loadData = async () => {
     setLoading(true);
     try {
