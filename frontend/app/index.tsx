@@ -2919,18 +2919,10 @@ const MainApp = () => {
                         style={dynamicStyles.deletePersonButton}
                         onPress={(e) => {
                           e.stopPropagation();
-                          Alert.alert(
-                            '🗑️ Person archivieren',
-                            `${person.first_name} ${person.last_name} archivieren?`,
-                            [
-                              { text: 'Abbrechen', style: 'cancel' },
-                              {
-                                text: 'Archivieren',
-                                style: 'destructive',
-                                onPress: () => deletePerson(person.id, `${person.first_name} ${person.last_name}`)
-                              }
-                            ]
-                          );
+                          // Web-kompatible Bestätigung
+                          if (window.confirm(`🗑️ Person archivieren\n\n${person.first_name} ${person.last_name} wirklich archivieren?`)) {
+                            deletePerson(person.id, `${person.first_name} ${person.last_name}`);
+                          }
                         }}
                       >
                         <Ionicons name="archive" size={16} color="#FFFFFF" />
