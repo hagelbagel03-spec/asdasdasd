@@ -2880,7 +2880,10 @@ const MainApp = () => {
                                      person.status === 'gefunden' ? colors.success : colors.primary
                     }
                   ]}
-                  onPress={() => editPerson(person)}
+                  onPress={() => {
+                    setSelectedPerson(person);
+                    setShowPersonDetailModal(true);
+                  }}
                 >
                   <View style={dynamicStyles.personInfo}>
                     <Text style={dynamicStyles.personName}>
