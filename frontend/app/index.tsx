@@ -649,6 +649,10 @@ const MainApp = () => {
   const [showIncidentsScreen, setShowIncidentsScreen] = useState(false);
   const [incidents, setIncidents] = useState([]);
   const [incidentsLoading, setIncidentsLoading] = useState(false);
+  const [showIncidentDetailModal, setShowIncidentDetailModal] = useState(false);
+  const [selectedIncident, setSelectedIncident] = useState(null);
+  const [editingIncident, setEditingIncident] = useState(false);
+  const [showIncidentMap, setShowIncidentMap] = useState(false);
   
   // Database states
   const [persons, setPersons] = useState([]);  
