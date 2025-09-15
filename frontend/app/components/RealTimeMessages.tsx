@@ -582,7 +582,10 @@ const RealTimeMessages: React.FC<RealTimeMessagesProps> = ({ user, token, select
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: false })}
+            maintainVisibleContentPosition={{
+              minIndexForVisible: 0,
+              autoscrollToTopThreshold: 10,
+            }}
           >
             {messages.map((message) => {
               const isMine = isMyMessage(message.sender_id);
