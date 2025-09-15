@@ -66,7 +66,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ visible, onClose, onUserAdd
   const [loading, setLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState(false);
 
-  const API_URL = "http://212.227.57.238:8001/api";
+  const API_URL = "http://212.227.57.238:8001";
 
   const resetForm = () => {
     setFormData({
