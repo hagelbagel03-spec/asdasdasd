@@ -891,7 +891,7 @@ const MainApp = () => {
         await loadUsersByStatus(); // Team-Liste neu laden
       } else {
         // Normales Profil-Update
-        const response = await axios.put(`${API_URL}/auth/profile`, updates, config);
+        const response = await axios.put(`${API_URL}/api/auth/profile`, updates, config);
         await updateUser(response.data);
         setUserStatus(response.data.status);
         setProfileData({
