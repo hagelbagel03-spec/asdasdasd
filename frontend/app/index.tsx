@@ -3044,8 +3044,9 @@ const MainApp = () => {
                     </View>
                   )}
                 </TouchableOpacity>
-              ))
-            )}
+                ))
+              );
+            })()}
           </>
         )}
         <View style={{ height: 20 }} />
