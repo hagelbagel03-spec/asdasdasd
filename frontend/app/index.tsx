@@ -2903,6 +2903,29 @@ const MainApp = () => {
         </View>
       </View>
 
+      {/* Search Field */}
+      <View style={dynamicStyles.searchContainer}>
+        <View style={dynamicStyles.searchInputContainer}>
+          <Ionicons name="search" size={20} color={colors.textMuted} style={dynamicStyles.searchIcon} />
+          <TextInput
+            style={dynamicStyles.searchInput}
+            placeholder="Nach Name suchen..."
+            placeholderTextColor={colors.textMuted}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            clearButtonMode="while-editing"
+          />
+          {searchQuery ? (
+            <TouchableOpacity 
+              onPress={() => setSearchQuery('')}
+              style={dynamicStyles.clearSearchButton}
+            >
+              <Ionicons name="close-circle" size={20} color={colors.textMuted} />
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </View>
+
       {/* Add Person Button */}
       <TouchableOpacity
         style={[dynamicStyles.actionButton, { backgroundColor: colors.primary }]}
