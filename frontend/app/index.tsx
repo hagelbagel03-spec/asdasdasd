@@ -1166,6 +1166,71 @@ const MainApp = () => {
     setShowPersonModal(true);
   };
 
+  // Vorfälle-Management Funktionen
+  const loadAllIncidents = async () => {
+    setIncidentsLoading(true);
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+      
+      console.log('🚨 Loading all incidents...');
+      const response = await axios.get(`${API_URL}/api/incidents`, config);
+      console.log('✅ All incidents loaded:', response.data.length);
+      setIncidents(response.data);
+      
+    } catch (error) {
+      console.error('❌ Error loading incidents:', error);
+      setIncidents([]);
+    } finally {
+      setIncidentsLoading(false);
+    }
+  };
+
+  const deleteIncident = async (incidentId, incidentTitle) => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+      
+      console.log('🗑️ Lösche Vorfall:', incidentId, incidentTitle);
+      await axios.delete(`${API_URL}/api/incidents/${incidentId}`, config);
+      
+      // Web-kompatible Erfolgsmeldung
+      window.alert(`✅ Erfolg\n\nVorfall "${incidentTitle}" wurde erfolgreich gelöscht!`);
+      await loadAllIncidents();
+      await loadData(); // Home-Statistiken aktualisieren
+      
+    } catch (error) {
+      console.error('❌ Incident delete error:', error);
+      window.alert(`❌ Fehler\n\nVorfall konnte nicht gelöscht werden.\nFehler: ${error.message}`);
+    }
+  };
+
+  const completeIncident = async (incidentId, incidentTitle) => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+      
+      console.log('✅ Schließe Vorfall ab:', incidentId, incidentTitle);
+      await axios.put(`${API_URL}/api/incidents/${incidentId}/complete`, {}, config);
+      
+      window.alert(`✅ Erfolg\n\nVorfall "${incidentTitle}" wurde abgeschlossen und archiviert!`);
+      await loadAllIncidents();
+      await loadData();
+      
+    } catch (error) {
+      console.error('❌ Incident complete error:', error);
+      window.alert(`❌ Fehler\n\nVorfall konnte nicht abgeschlossen werden.\nFehler: ${error.message}`);
+    }
+  };
+
+  const showIncidentOnMap = (incident) => {
+    setSelectedIncident(incident);
+    setShowIncidentMap(true);
+  };
+
   const submitIncident = async () => {
     if (!incidentFormData.title || !incidentFormData.description) {
       Alert.alert('⚠️ Fehler', 'Bitte füllen Sie alle Pflichtfelder aus');
