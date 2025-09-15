@@ -654,6 +654,18 @@ const MainApp = () => {
   const [editingIncident, setEditingIncident] = useState(false);
   const [showIncidentMap, setShowIncidentMap] = useState(false);
   
+  // Private Messaging States
+  const [showPrivateMessageModal, setShowPrivateMessageModal] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
+  const [privateMessage, setPrivateMessage] = useState('');
+  const [privateMessages, setPrivateMessages] = useState([]);
+  const [sendingPrivateMessage, setSendingPrivateMessage] = useState(false);
+  
+  // Notifications States
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+  
   // Database states
   const [persons, setPersons] = useState([]);  
   const [showPersonModal, setShowPersonModal] = useState(false);
