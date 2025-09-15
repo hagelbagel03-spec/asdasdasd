@@ -3322,6 +3322,243 @@ Beispielinhalt:
         }}
         token={token}
       />
+
+      {/* Person Modal - Personendatenbank */}
+      <Modal
+        visible={showPersonModal}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowPersonModal(false)}
+      >
+        <SafeAreaView style={dynamicStyles.container}>
+          <View style={dynamicStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setShowPersonModal(false)}>
+              <Ionicons name="close" size={24} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={dynamicStyles.modalTitle}>
+              {editingPerson ? '✏️ Person bearbeiten' : '👤 Person hinzufügen'}
+            </Text>
+            <TouchableOpacity 
+              onPress={savePerson}
+              disabled={savingPerson}
+            >
+              {savingPerson ? (
+                <ActivityIndicator color={colors.primary} size="small" />
+              ) : (
+                <Text style={dynamicStyles.saveButtonText}>Speichern</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <KeyboardAvoidingView 
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
+            <ScrollView style={dynamicStyles.modalContent} showsVerticalScrollIndicator={false}>
+              
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>👤 Vorname *</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.first_name}
+                  onChangeText={(text) => setPersonFormData({...personFormData, first_name: text})}
+                  placeholder="Vorname"
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>👤 Nachname *</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.last_name}
+                  onChangeText={(text) => setPersonFormData({...personFormData, last_name: text})}
+                  placeholder="Nachname"
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>🏠 Adresse</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.address}
+                  onChangeText={(text) => setPersonFormData({...personFormData, address: text})}
+                  placeholder="Straße, PLZ Ort"
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>🎂 Alter</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.age}
+                  onChangeText={(text) => setPersonFormData({...personFormData, age: text})}
+                  placeholder="Alter in Jahren"
+                  placeholderTextColor={colors.textMuted}
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>📅 Geburtsdatum</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.birth_date}
+                  onChangeText={(text) => setPersonFormData({...personFormData, birth_date: text})}
+                  placeholder="YYYY-MM-DD"
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>📊 Status</Text>
+                <View style={dynamicStyles.pickerContainer}>
+                  <TouchableOpacity 
+                    style={[
+                      dynamicStyles.pickerButton, 
+                      personFormData.status === 'vermisst' && dynamicStyles.pickerButtonActive
+                    ]}
+                    onPress={() => setPersonFormData({...personFormData, status: 'vermisst'})}
+                  >
+                    <Text style={[
+                      dynamicStyles.pickerButtonText,
+                      personFormData.status === 'vermisst' && dynamicStyles.pickerButtonTextActive
+                    ]}>⚠️ Vermisst</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[
+                      dynamicStyles.pickerButton, 
+                      personFormData.status === 'gesucht' && dynamicStyles.pickerButtonActive
+                    ]}
+                    onPress={() => setPersonFormData({...personFormData, status: 'gesucht'})}
+                  >
+                    <Text style={[
+                      dynamicStyles.pickerButtonText,
+                      personFormData.status === 'gesucht' && dynamicStyles.pickerButtonTextActive
+                    ]}>🚨 Gesucht</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[
+                      dynamicStyles.pickerButton, 
+                      personFormData.status === 'gefunden' && dynamicStyles.pickerButtonActive
+                    ]}
+                    onPress={() => setPersonFormData({...personFormData, status: 'gefunden'})}
+                  >
+                    <Text style={[
+                      dynamicStyles.pickerButtonText,
+                      personFormData.status === 'gefunden' && dynamicStyles.pickerButtonTextActive
+                    ]}>✅ Gefunden</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>📝 Beschreibung</Text>
+                <TextInput
+                  style={[dynamicStyles.formInput, dynamicStyles.reportTextArea]}
+                  value={personFormData.description}
+                  onChangeText={(text) => setPersonFormData({...personFormData, description: text})}
+                  placeholder="Aussehen, Besonderheiten, weitere Details..."
+                  placeholderTextColor={colors.textMuted}
+                  multiline
+                  numberOfLines={4}
+                  textAlignVertical="top"
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>📍 Zuletzt gesehen</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.last_seen_location}
+                  onChangeText={(text) => setPersonFormData({...personFormData, last_seen_location: text})}
+                  placeholder="Ort wo Person zuletzt gesehen wurde"
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>📅 Datum zuletzt gesehen</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.last_seen_date}
+                  onChangeText={(text) => setPersonFormData({...personFormData, last_seen_date: text})}
+                  placeholder="YYYY-MM-DD"
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>📞 Kontaktinformationen</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.contact_info}
+                  onChangeText={(text) => setPersonFormData({...personFormData, contact_info: text})}
+                  placeholder="Angehörige, Notfallkontakt, etc."
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>🆔 Fallnummer</Text>
+                <TextInput
+                  style={dynamicStyles.formInput}
+                  value={personFormData.case_number}
+                  onChangeText={(text) => setPersonFormData({...personFormData, case_number: text})}
+                  placeholder="z.B. VM-2024-001"
+                  placeholderTextColor={colors.textMuted}
+                />
+              </View>
+
+              <View style={dynamicStyles.formGroup}>
+                <Text style={dynamicStyles.formLabel}>⚡ Priorität</Text>
+                <View style={dynamicStyles.pickerContainer}>
+                  <TouchableOpacity 
+                    style={[
+                      dynamicStyles.pickerButton, 
+                      personFormData.priority === 'low' && dynamicStyles.pickerButtonActive
+                    ]}
+                    onPress={() => setPersonFormData({...personFormData, priority: 'low'})}
+                  >
+                    <Text style={[
+                      dynamicStyles.pickerButtonText,
+                      personFormData.priority === 'low' && dynamicStyles.pickerButtonTextActive
+                    ]}>🟢 Niedrig</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[
+                      dynamicStyles.pickerButton, 
+                      personFormData.priority === 'medium' && dynamicStyles.pickerButtonActive
+                    ]}
+                    onPress={() => setPersonFormData({...personFormData, priority: 'medium'})}
+                  >
+                    <Text style={[
+                      dynamicStyles.pickerButtonText,
+                      personFormData.priority === 'medium' && dynamicStyles.pickerButtonTextActive
+                    ]}>🟡 Mittel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[
+                      dynamicStyles.pickerButton, 
+                      personFormData.priority === 'high' && dynamicStyles.pickerButtonActive
+                    ]}
+                    onPress={() => setPersonFormData({...personFormData, priority: 'high'})}
+                  >
+                    <Text style={[
+                      dynamicStyles.pickerButtonText,
+                      personFormData.priority === 'high' && dynamicStyles.pickerButtonTextActive
+                    ]}>🔴 Hoch</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ height: 40 }} />
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 };
