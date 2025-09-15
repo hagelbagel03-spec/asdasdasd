@@ -2959,15 +2959,23 @@ const MainApp = () => {
                 : persons;
 
               return filteredPersons.length === 0 ? (
-              <View style={dynamicStyles.emptyState}>
-                <Ionicons name="people-outline" size={64} color={colors.textMuted} />
-                <Text style={dynamicStyles.emptyStateText}>Keine Personen in der Datenbank</Text>
-                <Text style={dynamicStyles.emptyStateSubtext}>
-                  Fügen Sie neue Personen hinzu, um sie zu verwalten
-                </Text>
-              </View>
-            ) : (
-              persons.map((person) => (
+                <View style={dynamicStyles.emptyState}>
+                  <Ionicons name={searchQuery ? "search-outline" : "people-outline"} size={64} color={colors.textMuted} />
+                  <Text style={dynamicStyles.emptyStateText}>
+                    {searchQuery 
+                      ? `Keine Personen gefunden für "${searchQuery}"` 
+                      : "Keine Personen in der Datenbank"
+                    }
+                  </Text>
+                  <Text style={dynamicStyles.emptyStateSubtext}>
+                    {searchQuery 
+                      ? "Versuchen Sie eine andere Suchanfrage"
+                      : "Fügen Sie neue Personen hinzu, um sie zu verwalten"
+                    }
+                  </Text>
+                </View>
+              ) : (
+                filteredPersons.map((person) => (
                 <TouchableOpacity
                   key={person.id}
                   style={[
