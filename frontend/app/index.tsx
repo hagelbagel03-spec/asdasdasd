@@ -633,6 +633,7 @@ const MainApp = () => {
   const [showPersonDetailModal, setShowPersonDetailModal] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [editingPerson, setEditingPerson] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [personFormData, setPersonFormData] = useState({
     first_name: '',
     last_name: '',
