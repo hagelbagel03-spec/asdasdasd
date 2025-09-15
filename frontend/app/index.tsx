@@ -655,7 +655,7 @@ const MainApp = () => {
   const [savingPerson, setSavingPerson] = useState(false);
   const [databaseLoading, setDatabaseLoading] = useState(false);
   
-  const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL + "/api" || "https://german-fixer.preview.emergentagent.com/api";
+  const API_URL = "http://212.227.57.238:8001/api";
   
   useEffect(() => {
     loadData();
