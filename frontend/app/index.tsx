@@ -2702,6 +2702,7 @@ const MainApp = () => {
       case 'report': return renderIncidentScreen();
       case 'berichte': return renderBerichteScreen();
       case 'team': return renderTeamScreen();
+      case 'database': return renderDatabaseScreen();
       default: return renderHomeScreen();
     }
   };
