@@ -3180,7 +3180,152 @@ const MainApp = () => {
     </View>
   );
 
+  const renderIncidentsDetailScreen = () => (
+    <View style={dynamicStyles.content}>
+      <View style={dynamicStyles.modalHeader}>
+        <TouchableOpacity onPress={() => setShowIncidentsScreen(false)}>
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
+        </TouchableOpacity>
+        <Text style={dynamicStyles.modalTitle}>🚨 Alle aktuellen Vorfälle</Text>
+        <TouchableOpacity onPress={() => {
+          setIncidentsLoading(true);
+          loadData();
+        }}>
+          <Ionicons name="refresh" size={24} color={colors.primary} />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {incidentsLoading ? (
+          <View style={dynamicStyles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text style={dynamicStyles.loadingText}>Lade alle Vorfälle...</Text>
+          </View>
+        ) : (
+          <>
+            {recentIncidents.length === 0 ? (
+              <View style={dynamicStyles.emptyState}>
+                <Ionicons name="checkmark-circle-outline" size={64} color={colors.success} />
+                <Text style={dynamicStyles.emptyStateText}>Keine aktuellen Vorfälle</Text>
+                <Text style={dynamicStyles.emptyStateSubtext}>
+                  Alle Vorfälle sind bearbeitet oder es gibt keine neuen Meldungen
+                </Text>
+              </View>
+            ) : (
+              recentIncidents.map((incident, index) => (
+                <TouchableOpacity 
+                  key={incident.id || index}
+                  style={[
+                    dynamicStyles.incidentDetailCard,
+                    {
+                      borderLeftColor: incident.priority === 'high' ? colors.error :
+                                     incident.priority === 'medium' ? colors.warning :
+                                     colors.success
+                    }
+                  ]}
+                  onPress={() => {
+                    Alert.alert(
+                      `🚨 ${incident.title}`,
+                      `Beschreibung: ${incident.description}\n\nOrt: ${incident.address}\n\nStatus: ${incident.status}\n\nPriorität: ${incident.priority}`,
+                      [
+                        { text: 'OK', style: 'default' },
+                        { text: 'Auf Karte zeigen', onPress: () => {
+                          // Hier könnte Karten-Navigation implementiert werden
+                        }}
+                      ]
+                    );
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <View style={[
+                    dynamicStyles.incidentIcon, 
+                    { backgroundColor: (incident.priority === 'high' ? colors.error :
+                                      incident.priority === 'medium' ? colors.warning :
+                                      colors.success) + '20' }
+                  ]}>
+                    <Ionicons 
+                      name={incident.priority === 'high' ? "alert-circle" : 
+                            incident.priority === 'medium' ? "warning" : "information-circle"} 
+                      size={28} 
+                      color={incident.priority === 'high' ? colors.error :
+                             incident.priority === 'medium' ? colors.warning :
+                             colors.success} 
+                    />
+                  </View>
+                  
+                  <View style={dynamicStyles.incidentContent}>
+                    <Text style={dynamicStyles.incidentDetailTitle}>{incident.title || 'Unbekannter Vorfall'}</Text>
+                    <Text style={dynamicStyles.incidentDescription} numberOfLines={2}>
+                      {incident.description || 'Keine Beschreibung verfügbar'}
+                    </Text>
+                    <Text style={dynamicStyles.incidentTime}>
+                      🕒 {incident.created_at ? 
+                        new Date(incident.created_at).toLocaleString('de-DE') : 
+                        'Unbekannte Zeit'
+                      }
+                    </Text>
+                    <Text style={dynamicStyles.incidentLocation}>
+                      📍 {incident.address || 'Unbekannte Adresse'}
+                    </Text>
+                    <View style={dynamicStyles.incidentStatusRow}>
+                      <Text style={[
+                        dynamicStyles.incidentStatusBadge,
+                        { 
+                          backgroundColor: incident.status === 'open' ? colors.error + '20' : 
+                                         incident.status === 'in_progress' ? colors.warning + '20' : 
+                                         colors.success + '20',
+                          color: incident.status === 'open' ? colors.error : 
+                                incident.status === 'in_progress' ? colors.warning : 
+                                colors.success,
+                          borderColor: incident.status === 'open' ? colors.error : 
+                                      incident.status === 'in_progress' ? colors.warning : 
+                                      colors.success
+                        }
+                      ]}>
+                        {incident.status === 'open' ? '🔴 Offen' : 
+                         incident.status === 'in_progress' ? '🟡 In Bearbeitung' : 
+                         incident.status === 'completed' ? '🟢 Abgeschlossen' :
+                         '❓ ' + (incident.status || 'Unbekannt')}
+                      </Text>
+                      <Text style={[
+                        dynamicStyles.incidentPriorityBadge,
+                        {
+                          backgroundColor: incident.priority === 'high' ? colors.error + '15' :
+                                         incident.priority === 'medium' ? colors.warning + '15' :
+                                         colors.success + '15',
+                          color: incident.priority === 'high' ? colors.error :
+                                incident.priority === 'medium' ? colors.warning :
+                                colors.success
+                        }
+                      ]}>
+                        {incident.priority === 'high' ? '🔴 HOCH' : 
+                         incident.priority === 'medium' ? '🟡 MITTEL' : 
+                         incident.priority === 'low' ? '🟢 NIEDRIG' : 
+                         '❓ ' + (incident.priority || 'Unbekannt')}
+                      </Text>
+                    </View>
+                    {incident.assigned_to_name && (
+                      <Text style={[dynamicStyles.incidentAssignee]}>
+                        👤 Bearbeitet von: {incident.assigned_to_name}
+                      </Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))
+            )}
+          </>
+        )}
+        <View style={{ height: 20 }} />
+      </ScrollView>
+    </View>
+  );
+
   const renderContent = () => {
+    // Show incidents detail screen if requested
+    if (showIncidentsScreen) {
+      return renderIncidentsDetailScreen();
+    }
+
     switch (activeTab) {
       case 'home': return renderHomeScreen();
       case 'messages': return renderMessagesScreen();
