@@ -80,7 +80,7 @@ const RealTimeMessages: React.FC<RealTimeMessagesProps> = ({ user, token, select
   const [currentChannel, setCurrentChannel] = useState(selectedChannel);
   const scrollViewRef = useRef<ScrollView>(null);
   
-  const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL + "/api" || "https://german-fixer.preview.emergentagent.com/api";
+  const API_URL = "http://212.227.57.238:8001/api";
 
   // Channel options with modern icons
   const channels = [
