@@ -1575,6 +1575,67 @@ const MainApp = () => {
       color: '#FFFFFF',
       fontWeight: '600',
     },
+
+    // Person Detail Modal Styles
+    detailCard: {
+      backgroundColor: colors.cardBackground,
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    detailSectionTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: colors.text,
+      marginBottom: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      paddingBottom: 8,
+    },
+    detailRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: 8,
+      flexWrap: 'wrap',
+    },
+    detailLabel: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: colors.textMuted,
+      minWidth: 100,
+      flex: 1,
+    },
+    detailValue: {
+      fontSize: 14,
+      color: colors.text,
+      flex: 2,
+      textAlign: 'right',
+    },
+    detailDescription: {
+      fontSize: 14,
+      color: colors.text,
+      lineHeight: 20,
+      textAlign: 'left',
+    },
+    statusBadge: {
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 16,
+      borderWidth: 1,
+      alignSelf: 'flex-end',
+    },
+    statusBadgeText: {
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    editHeaderButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
     
     // Action Buttons
     actionButton: {
