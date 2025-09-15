@@ -929,6 +929,166 @@ const MainApp = () => {
     }
   };
 
+  // Personen-Datenbank Funktionen
+  const loadPersons = async () => {
+    setDatabaseLoading(true);
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+      
+      console.log('📇 Loading persons database...');
+      const response = await axios.get(`${API_URL}/persons`, config);
+      console.log('✅ Persons loaded:', response.data.length);
+      setPersons(response.data);
+      
+    } catch (error) {
+      console.error('❌ Error loading persons:', error);
+      setPersons([]);
+    } finally {
+      setDatabaseLoading(false);
+    }
+  };
+
+  const loadPersonStats = async () => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+      
+      const response = await axios.get(`${API_URL}/persons/stats/overview`, config);
+      setPersonStats(response.data);
+      console.log('✅ Person stats loaded:', response.data);
+      
+    } catch (error) {
+      console.error('❌ Error loading person stats:', error);
+      setPersonStats({
+        total_persons: 0,
+        missing_persons: 0,
+        wanted_persons: 0,
+        found_persons: 0
+      });
+    }
+  };
+
+  const savePerson = async () => {
+    if (!personFormData.first_name || !personFormData.last_name) {
+      Alert.alert('⚠️ Fehler', 'Bitte füllen Sie Vor- und Nachname aus');
+      return;
+    }
+
+    setSavingPerson(true);
+
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+
+      const personData = {
+        ...personFormData,
+        age: personFormData.age ? parseInt(personFormData.age) : null
+      };
+
+      if (editingPerson) {
+        // Update existing person
+        console.log('📝 Updating person:', editingPerson.id);
+        await axios.put(`${API_URL}/persons/${editingPerson.id}`, personData, config);
+        Alert.alert('✅ Erfolg', 'Person wurde erfolgreich aktualisiert!');
+      } else {
+        // Create new person
+        console.log('📝 Creating new person');
+        await axios.post(`${API_URL}/persons`, personData, config);
+        Alert.alert('✅ Erfolg', 'Person wurde erfolgreich hinzugefügt!');
+      }
+
+      setShowPersonModal(false);
+      setEditingPerson(null);
+      setPersonFormData({
+        first_name: '',
+        last_name: '',
+        address: '',
+        age: '',
+        birth_date: '',
+        status: 'vermisst',
+        description: '',
+        last_seen_location: '',
+        last_seen_date: '',
+        contact_info: '',
+        case_number: '',
+        priority: 'medium',
+        photo: ''
+      });
+      
+      // Reload data
+      await loadPersons();
+      await loadPersonStats();
+
+    } catch (error) {
+      console.error('❌ Error saving person:', error);
+      Alert.alert('❌ Fehler', 'Person konnte nicht gespeichert werden');
+    } finally {
+      setSavingPerson(false);
+    }
+  };
+
+  const deletePerson = async (personId, personName) => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+      
+      await axios.delete(`${API_URL}/persons/${personId}`, config);
+      
+      Alert.alert('✅ Erfolg', `${personName} wurde erfolgreich archiviert!`);
+      await loadPersons();
+      await loadPersonStats();
+      
+    } catch (error) {
+      console.error('❌ Person delete error:', error);
+      Alert.alert('❌ Fehler', 'Person konnte nicht archiviert werden');
+    }
+  };
+
+  const createNewPerson = () => {
+    setEditingPerson(null);
+    setPersonFormData({
+      first_name: '',
+      last_name: '',
+      address: '',
+      age: '',
+      birth_date: '',
+      status: 'vermisst',
+      description: '',
+      last_seen_location: '',
+      last_seen_date: '',
+      contact_info: '',
+      case_number: '',
+      priority: 'medium',
+      photo: ''
+    });
+    setShowPersonModal(true);
+  };
+
+  const editPerson = (person) => {
+    setEditingPerson(person);
+    setPersonFormData({
+      first_name: person.first_name,
+      last_name: person.last_name,
+      address: person.address || '',
+      age: person.age ? person.age.toString() : '',
+      birth_date: person.birth_date || '',
+      status: person.status || 'vermisst',
+      description: person.description || '',
+      last_seen_location: person.last_seen_location || '',
+      last_seen_date: person.last_seen_date || '',
+      contact_info: person.contact_info || '',
+      case_number: person.case_number || '',
+      priority: person.priority || 'medium',
+      photo: person.photo || ''
+    });
+    setShowPersonModal(true);
+  };
+
   const submitIncident = async () => {
     if (!incidentFormData.title || !incidentFormData.description) {
       Alert.alert('⚠️ Fehler', 'Bitte füllen Sie alle Pflichtfelder aus');
