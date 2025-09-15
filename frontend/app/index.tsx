@@ -1456,6 +1456,91 @@ const MainApp = () => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    deleteButton: {
+      backgroundColor: colors.error,
+      borderRadius: 16,
+      width: 32,
+      height: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: 8,
+    },
+
+    // Person Card Styles
+    personCard: {
+      backgroundColor: colors.cardBackground,
+      borderRadius: 16,
+      padding: 16,
+      marginVertical: 6,
+      marginHorizontal: 2,
+      borderLeftWidth: 4,
+      borderLeftColor: colors.primary,
+      flexDirection: 'row',
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    personInfo: {
+      flex: 1,
+      marginRight: 12,
+    },
+    personName: {
+      fontSize: 16,
+      fontWeight: '700',
+      color: colors.text,
+      marginBottom: 4,
+    },
+    personDetails: {
+      fontSize: 14,
+      color: colors.textMuted,
+      marginBottom: 2,
+    },
+    personStatus: {
+      fontSize: 14,
+      fontWeight: '600',
+      marginBottom: 2,
+    },
+    personCase: {
+      fontSize: 12,
+      color: colors.textMuted,
+      fontStyle: 'italic',
+    },
+    personActions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+
+    // Statistics Cards  
+    statsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+      flexWrap: 'wrap',
+    },
+    statCard: {
+      flex: 1,
+      backgroundColor: colors.cardBackground,
+      borderRadius: 12,
+      padding: 12,
+      margin: 4,
+      alignItems: 'center',
+      borderWidth: 2,
+      minWidth: 70,
+    },
+    statNumber: {
+      fontSize: 20,
+      fontWeight: '900',
+      marginBottom: 4,
+    },
+    statLabel: {
+      fontSize: 11,
+      color: colors.textMuted,
+      textAlign: 'center',
+      fontWeight: '600',
+    },
     
     // Action Buttons
     actionButton: {
