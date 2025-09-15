@@ -2945,7 +2945,20 @@ const MainApp = () => {
           </View>
         ) : (
           <>
-            {persons.length === 0 ? (
+            {(() => {
+              // Filter persons based on search query
+              const filteredPersons = searchQuery.trim() 
+                ? persons.filter(person => {
+                    const fullName = `${person.first_name} ${person.last_name}`.toLowerCase();
+                    const query = searchQuery.toLowerCase().trim();
+                    return fullName.includes(query) || 
+                           person.first_name.toLowerCase().includes(query) ||
+                           person.last_name.toLowerCase().includes(query) ||
+                           (person.case_number && person.case_number.toLowerCase().includes(query));
+                  })
+                : persons;
+
+              return filteredPersons.length === 0 ? (
               <View style={dynamicStyles.emptyState}>
                 <Ionicons name="people-outline" size={64} color={colors.textMuted} />
                 <Text style={dynamicStyles.emptyStateText}>Keine Personen in der Datenbank</Text>
