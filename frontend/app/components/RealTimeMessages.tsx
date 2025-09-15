@@ -126,11 +126,12 @@ const RealTimeMessages: React.FC<RealTimeMessagesProps> = ({ user, token, select
       
       setMessages(serverMessages);
       
-      // Auto-scroll to bottom for new messages
+      // Nur scrollen wenn am Ende der Liste (keine störende Auto-Scroll)
       if (isPolling && serverMessages.length > messages.length) {
+        // Nur scrollen wenn User nicht scrollt
         setTimeout(() => {
-          scrollViewRef.current?.scrollToEnd({ animated: true });
-        }, 100);
+          scrollViewRef.current?.scrollToEnd({ animated: false });
+        }, 50);
       }
     } catch (error) {
       console.error('❌ Error loading messages:', error);
