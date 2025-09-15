@@ -1037,7 +1037,7 @@ const MainApp = () => {
         headers: { Authorization: `Bearer ${token}` }
       } : {};
       
-      await axios.delete(`${API_URL}/persons/${personId}`, config);
+      await axios.delete(`${API_URL}/api/persons/${personId}`, config);
       
       Alert.alert('✅ Erfolg', `${personName} wurde erfolgreich archiviert!`);
       await loadPersons();
