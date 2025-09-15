@@ -2582,6 +2582,20 @@ const MainApp = () => {
         </TouchableOpacity>
         
         <TouchableOpacity 
+          style={[dynamicStyles.tabItem, activeTab === 'database' && dynamicStyles.tabItemActive]}
+          onPress={() => setActiveTab('database')}
+        >
+          <Ionicons 
+            name={activeTab === 'database' ? 'library' : 'library-outline'} 
+            size={24} 
+            color={activeTab === 'database' ? '#FFFFFF' : colors.textMuted} 
+          />
+          <Text style={[dynamicStyles.tabLabel, activeTab === 'database' && dynamicStyles.tabLabelActive]}>
+            Datenbank
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
           style={[dynamicStyles.tabItem, activeTab === 'team' && dynamicStyles.tabItemActive]}
           onPress={() => setActiveTab('team')}
         >
