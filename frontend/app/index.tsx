@@ -135,17 +135,35 @@ const BACKEND_BASE_URL = "http://212.227.57.238:8001";
 
   const checkAuthState = async () => {
     try {
-      const storedToken = await AsyncStorage.getItem('token');
-      const storedUser = await AsyncStorage.getItem('user');
+      // Versuche gespeicherten Token zu laden
+      const savedToken = await AsyncStorage.getItem('stadtwache_token');
+      const savedUser = await AsyncStorage.getItem('stadtwache_user');
       
-      if (storedToken && storedUser) {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-        axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+      if (savedToken && savedUser) {
+        console.log('🔐 Gespeicherte Login-Daten gefunden');
+        
+        // Validiere Token mit Backend
+        try {
+          const response = await axios.get(`${BACKEND_BASE_URL}/api/auth/me`, {
+            headers: { Authorization: `Bearer ${savedToken}` }
+          });
+          
+          console.log('✅ Token noch gültig, Auto-Login...');
+          setToken(savedToken);
+          setUser(JSON.parse(savedUser));
+          axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+          
+        } catch (error) {
+          console.log('❌ Token abgelaufen, lösche gespeicherte Daten');
+          await AsyncStorage.removeItem('stadtwache_token');
+          await AsyncStorage.removeItem('stadtwache_user');
+        }
       }
     } catch (error) {
-      console.error('Error checking auth state:', error);
+      console.error('❌ Auto-Login Fehler:', error);
     } finally {
+      // Kurze Verzögerung für bessere UX
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setLoading(false);
     }
   };
