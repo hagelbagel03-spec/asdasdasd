@@ -2320,14 +2320,24 @@ const MainApp = () => {
         </View>
       )}
 
-      {/* Current Incidents - FIXED VERSION */}
-      <View style={dynamicStyles.card}>
+      {/* Current Incidents - CLICKABLE VERSION */}
+      <TouchableOpacity 
+        style={dynamicStyles.card}
+        onPress={() => setShowIncidentsScreen(true)}
+        activeOpacity={0.8}
+      >
         <View style={dynamicStyles.cardHeader}>
           <Ionicons name="time" size={24} color={colors.primary} />
           <Text style={dynamicStyles.cardTitle}>Aktuelle Vorfälle</Text>
-          <TouchableOpacity onPress={loadData}>
-            <Ionicons name="refresh" size={20} color={colors.textMuted} />
-          </TouchableOpacity>
+          <View style={dynamicStyles.cardHeaderRight}>
+            <TouchableOpacity onPress={(e) => {
+              e.stopPropagation();
+              loadData();
+            }}>
+              <Ionicons name="refresh" size={20} color={colors.textMuted} />
+            </TouchableOpacity>
+            <Ionicons name="chevron-forward" size={20} color={colors.textMuted} style={{ marginLeft: 8 }} />
+          </View>
         </View>
         
         {/* CRITICAL FIX: Better empty state handling */}
