@@ -1637,6 +1637,39 @@ const MainApp = () => {
       alignItems: 'center',
       gap: 4,
     },
+
+    // Search Styles
+    searchContainer: {
+      marginBottom: 16,
+    },
+    searchInputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.cardBackground,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    searchIcon: {
+      marginRight: 12,
+    },
+    searchInput: {
+      flex: 1,
+      fontSize: 16,
+      color: colors.text,
+      fontWeight: '500',
+    },
+    clearSearchButton: {
+      marginLeft: 8,
+      padding: 4,
+    },
     
     // Action Buttons
     actionButton: {
