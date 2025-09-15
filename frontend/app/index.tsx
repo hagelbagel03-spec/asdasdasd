@@ -2168,7 +2168,51 @@ const MainApp = () => {
             </View>
             
             {users.map((officer) => (
-              <View key={officer.id} style={dynamicStyles.officerCard}>
+              <TouchableOpacity 
+                key={officer.id} 
+                style={dynamicStyles.officerCard}
+                onPress={() => {
+                  if (user?.role === 'admin') {
+                    // Admin kann Benutzer bearbeiten
+                    Alert.alert(
+                      '👤 Benutzer bearbeiten',
+                      `${officer.username} bearbeiten?`,
+                      [
+                        { text: 'Abbrechen', style: 'cancel' },
+                        { 
+                          text: '✏️ Bearbeiten', 
+                          onPress: () => {
+                            // Setze Benutzer-Daten zum Bearbeiten
+                            setProfileData({
+                              username: officer.username,
+                              phone: officer.phone || '',
+                              service_number: officer.service_number || '',
+                              rank: officer.rank || '',
+                              department: officer.department || ''
+                            });
+                            setUserStatus(officer.status || 'Im Dienst');
+                            setEditingUser(officer);
+                            setShowProfileModal(true);
+                          }
+                        },
+                        { 
+                          text: '🗑️ Löschen', 
+                          style: 'destructive',
+                          onPress: () => deleteUser(officer.id, officer.username)
+                        }
+                      ]
+                    );
+                  } else {
+                    // Normale Benutzer sehen nur Infos
+                    Alert.alert(
+                      '👤 Benutzer-Info',
+                      `Name: ${officer.username}\nAbteilung: ${officer.department || 'Allgemein'}\nRang: ${officer.rank || 'Beamter'}\nStatus: ${officer.status || 'Im Dienst'}`,
+                      [{ text: 'OK' }]
+                    );
+                  }
+                }}
+                disabled={!user}
+              >
                 <View style={dynamicStyles.officerInfo}>
                   <Text style={dynamicStyles.officerName}>👤 {officer.username}</Text>
                   <Text style={dynamicStyles.officerDetails}>
@@ -2177,8 +2221,35 @@ const MainApp = () => {
                   <Text style={dynamicStyles.officerBadge}>
                     🆔 Dienstnummer: {officer.badge_number || 'N/A'}
                   </Text>
+                  {officer.is_online && (
+                    <Text style={[dynamicStyles.officerBadge, { color: colors.success }]}>
+                      🟢 {officer.online_status}
+                    </Text>
+                  )}
                 </View>
-              </View>
+                {user?.role === 'admin' && (
+                  <View style={dynamicStyles.reportActions}>
+                    <TouchableOpacity 
+                      style={dynamicStyles.editButton}
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        setProfileData({
+                          username: officer.username,
+                          phone: officer.phone || '',
+                          service_number: officer.service_number || '',
+                          rank: officer.rank || '',
+                          department: officer.department || ''
+                        });
+                        setUserStatus(officer.status || 'Im Dienst');
+                        setEditingUser(officer);
+                        setShowProfileModal(true);
+                      }}
+                    >
+                      <Ionicons name="create" size={16} color="#FFFFFF" />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </TouchableOpacity>
             ))}
           </View>
         ))}
