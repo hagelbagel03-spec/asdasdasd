@@ -1952,7 +1952,7 @@ const MainApp = () => {
       fontWeight: '700',
       marginLeft: 8,
     },
-    mapButton: {
+    incidentMapButton: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
@@ -1960,7 +1960,7 @@ const MainApp = () => {
       paddingVertical: 16,
       borderRadius: 12,
     },
-    mapButtonText: {
+    incidentMapButtonText: {
       color: '#FFFFFF',
       fontSize: 16,
       fontWeight: '700',
