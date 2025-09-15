@@ -208,7 +208,7 @@ const BACKEND_BASE_URL = "http://212.227.57.238:8001";
   const updateUser = async (updatedData) => {
     const updatedUser = { ...user, ...updatedData };
     setUser(updatedUser);
-    await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+    await AsyncStorage.setItem('stadtwache_user', JSON.stringify(updatedUser));
   };
 
   const logout = async () => {
