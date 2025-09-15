@@ -1541,6 +1541,35 @@ const MainApp = () => {
       textAlign: 'center',
       fontWeight: '600',
     },
+
+    // Person Modal Picker Styles
+    pickerContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    pickerButton: {
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 20,
+      backgroundColor: colors.cardBackground,
+      borderWidth: 1,
+      borderColor: colors.border,
+      marginBottom: 8,
+    },
+    pickerButtonActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    pickerButtonText: {
+      fontSize: 14,
+      color: colors.text,
+      fontWeight: '500',
+    },
+    pickerButtonTextActive: {
+      color: '#FFFFFF',
+      fontWeight: '600',
+    },
     
     // Action Buttons
     actionButton: {
