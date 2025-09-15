@@ -956,7 +956,7 @@ const MainApp = () => {
         headers: { Authorization: `Bearer ${token}` }
       } : {};
       
-      const response = await axios.get(`${API_URL}/persons/stats/overview`, config);
+      const response = await axios.get(`${API_URL}/api/persons/stats/overview`, config);
       setPersonStats(response.data);
       console.log('✅ Person stats loaded:', response.data);
       
