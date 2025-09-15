@@ -152,7 +152,7 @@ const BACKEND_BASE_URL = "http://212.227.57.238:8001";
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
+      const response = await axios.post(`${BACKEND_BASE_URL}/api/auth/login`, {
         email,
         password
       });
