@@ -938,7 +938,7 @@ const MainApp = () => {
       } : {};
       
       console.log('📇 Loading persons database...');
-      const response = await axios.get(`${API_URL}/persons`, config);
+      const response = await axios.get(`${API_URL}/api/persons`, config);
       console.log('✅ Persons loaded:', response.data.length);
       setPersons(response.data);
       
