@@ -214,8 +214,8 @@ const BACKEND_BASE_URL = "http://212.227.57.238:8001";
   const logout = async () => {
     setUser(null);
     setToken(null);
-    await AsyncStorage.removeItem('token');
-    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem('stadtwache_token');
+    await AsyncStorage.removeItem('stadtwache_user');
     delete axios.defaults.headers.common['Authorization'];
   };
 
