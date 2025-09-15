@@ -1675,6 +1675,37 @@ const MainApp = () => {
       marginLeft: 8,
       padding: 4,
     },
+
+    // Card Header Right
+    cardHeaderRight: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+
+    // Summary Row for Overview Cards
+    summaryRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 12,
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+    },
+    summaryItem: {
+      alignItems: 'center',
+      flex: 1,
+    },
+    summaryNumber: {
+      fontSize: 18,
+      fontWeight: '800',
+      marginBottom: 2,
+    },
+    summaryLabel: {
+      fontSize: 10,
+      color: colors.textMuted,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
     
     // Action Buttons
     actionButton: {
