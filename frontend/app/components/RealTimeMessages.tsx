@@ -275,7 +275,7 @@ const RealTimeMessages: React.FC<RealTimeMessagesProps> = ({ user, token, select
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 12,
-      paddingVertical: 8,
+      paddingVertical: 4,
       borderRadius: 18,
       marginRight: 8,
       backgroundColor: '#F8F9FA',
