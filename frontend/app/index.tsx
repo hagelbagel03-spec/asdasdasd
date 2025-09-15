@@ -1643,6 +1643,68 @@ const MainApp = () => {
       gap: 4,
     },
 
+    // Incident Detail Styles
+    incidentDetailCard: {
+      backgroundColor: colors.cardBackground,
+      borderRadius: 16,
+      padding: 16,
+      marginVertical: 8,
+      marginHorizontal: 2,
+      borderLeftWidth: 6,
+      flexDirection: 'column',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    incidentDetailTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: colors.text,
+      marginBottom: 8,
+    },
+    incidentDescription: {
+      fontSize: 14,
+      color: colors.text,
+      marginBottom: 8,
+      lineHeight: 20,
+    },
+    incidentLocation: {
+      fontSize: 14,
+      color: colors.textMuted,
+      marginBottom: 4,
+    },
+    incidentStatusRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 8,
+      flexWrap: 'wrap',
+    },
+    incidentStatusBadge: {
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      borderRadius: 12,
+      borderWidth: 1,
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    incidentPriorityBadge: {
+      paddingHorizontal: 10,
+      paddingVertical: 3,
+      borderRadius: 10,
+      fontSize: 11,
+      fontWeight: '700',
+      textAlign: 'center',
+    },
+    incidentAssignee: {
+      fontSize: 12,
+      color: colors.success,
+      fontWeight: '600',
+      marginTop: 4,
+    },
+
     // Search Styles
     searchContainer: {
       marginBottom: 16,
