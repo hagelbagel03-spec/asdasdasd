@@ -1037,15 +1037,18 @@ const MainApp = () => {
         headers: { Authorization: `Bearer ${token}` }
       } : {};
       
+      console.log('🗑️ Lösche Person:', personId, personName);
       await axios.delete(`${API_URL}/api/persons/${personId}`, config);
       
-      Alert.alert('✅ Erfolg', `${personName} wurde erfolgreich archiviert!`);
+      // Web-kompatible Erfolgsmeldung
+      window.alert(`✅ Erfolg\n\n${personName} wurde erfolgreich archiviert!`);
       await loadPersons();
       await loadPersonStats();
       
     } catch (error) {
       console.error('❌ Person delete error:', error);
-      Alert.alert('❌ Fehler', 'Person konnte nicht archiviert werden');
+      // Web-kompatible Fehlermeldung
+      window.alert(`❌ Fehler\n\nPerson konnte nicht archiviert werden.\nFehler: ${error.message}`);
     }
   };
 
