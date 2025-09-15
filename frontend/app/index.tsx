@@ -3379,10 +3379,9 @@ const MainApp = () => {
         <TouchableOpacity onPress={() => setShowIncidentsScreen(false)}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={dynamicStyles.modalTitle}>🚨 Alle aktuellen Vorfälle</Text>
+        <Text style={dynamicStyles.modalTitle}>🚨 Vorfälle-Verwaltung</Text>
         <TouchableOpacity onPress={() => {
-          setIncidentsLoading(true);
-          loadData();
+          loadAllIncidents();
         }}>
           <Ionicons name="refresh" size={24} color={colors.primary} />
         </TouchableOpacity>
@@ -3396,7 +3395,7 @@ const MainApp = () => {
           </View>
         ) : (
           <>
-            {recentIncidents.length === 0 ? (
+            {incidents.length === 0 ? (
               <View style={dynamicStyles.emptyState}>
                 <Ionicons name="checkmark-circle-outline" size={64} color={colors.success} />
                 <Text style={dynamicStyles.emptyStateText}>Keine aktuellen Vorfälle</Text>
@@ -3405,9 +3404,9 @@ const MainApp = () => {
                 </Text>
               </View>
             ) : (
-              recentIncidents.map((incident, index) => (
+              incidents.map((incident) => (
                 <TouchableOpacity 
-                  key={incident.id || index}
+                  key={incident.id}
                   style={[
                     dynamicStyles.incidentDetailCard,
                     {
@@ -3417,16 +3416,8 @@ const MainApp = () => {
                     }
                   ]}
                   onPress={() => {
-                    Alert.alert(
-                      `🚨 ${incident.title}`,
-                      `Beschreibung: ${incident.description}\n\nOrt: ${incident.address}\n\nStatus: ${incident.status}\n\nPriorität: ${incident.priority}`,
-                      [
-                        { text: 'OK', style: 'default' },
-                        { text: 'Auf Karte zeigen', onPress: () => {
-                          // Hier könnte Karten-Navigation implementiert werden
-                        }}
-                      ]
-                    );
+                    setSelectedIncident(incident);
+                    setShowIncidentDetailModal(true);
                   }}
                   activeOpacity={0.7}
                 >
@@ -3447,18 +3438,15 @@ const MainApp = () => {
                   </View>
                   
                   <View style={dynamicStyles.incidentContent}>
-                    <Text style={dynamicStyles.incidentDetailTitle}>{incident.title || 'Unbekannter Vorfall'}</Text>
+                    <Text style={dynamicStyles.incidentDetailTitle}>{incident.title}</Text>
                     <Text style={dynamicStyles.incidentDescription} numberOfLines={2}>
-                      {incident.description || 'Keine Beschreibung verfügbar'}
+                      {incident.description}
                     </Text>
                     <Text style={dynamicStyles.incidentTime}>
-                      🕒 {incident.created_at ? 
-                        new Date(incident.created_at).toLocaleString('de-DE') : 
-                        'Unbekannte Zeit'
-                      }
+                      🕒 {new Date(incident.created_at).toLocaleString('de-DE')}
                     </Text>
                     <Text style={dynamicStyles.incidentLocation}>
-                      📍 {incident.address || 'Unbekannte Adresse'}
+                      📍 {incident.address}
                     </Text>
                     <View style={dynamicStyles.incidentStatusRow}>
                       <Text style={[
@@ -3477,8 +3465,7 @@ const MainApp = () => {
                       ]}>
                         {incident.status === 'open' ? '🔴 Offen' : 
                          incident.status === 'in_progress' ? '🟡 In Bearbeitung' : 
-                         incident.status === 'completed' ? '🟢 Abgeschlossen' :
-                         '❓ ' + (incident.status || 'Unbekannt')}
+                         '🟢 Abgeschlossen'}
                       </Text>
                       <Text style={[
                         dynamicStyles.incidentPriorityBadge,
@@ -3493,14 +3480,45 @@ const MainApp = () => {
                       ]}>
                         {incident.priority === 'high' ? '🔴 HOCH' : 
                          incident.priority === 'medium' ? '🟡 MITTEL' : 
-                         incident.priority === 'low' ? '🟢 NIEDRIG' : 
-                         '❓ ' + (incident.priority || 'Unbekannt')}
+                         '🟢 NIEDRIG'}
                       </Text>
                     </View>
-                    {incident.assigned_to_name && (
-                      <Text style={[dynamicStyles.incidentAssignee]}>
-                        👤 Bearbeitet von: {incident.assigned_to_name}
-                      </Text>
+                  </View>
+                  
+                  {/* Incident Action Buttons */}
+                  <View style={dynamicStyles.incidentActions}>
+                    <TouchableOpacity
+                      style={[dynamicStyles.incidentActionBtn, { backgroundColor: colors.primary }]}
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        showIncidentOnMap(incident);
+                      }}
+                    >
+                      <Ionicons name="map" size={16} color="#FFFFFF" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[dynamicStyles.incidentActionBtn, { backgroundColor: colors.success }]}
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`✅ Vorfall abschließen\n\n"${incident.title}" abschließen?`)) {
+                          completeIncident(incident.id, incident.title);
+                        }
+                      }}
+                    >
+                      <Ionicons name="checkmark" size={16} color="#FFFFFF" />
+                    </TouchableOpacity>
+                    {user?.role === 'admin' && (
+                      <TouchableOpacity
+                        style={[dynamicStyles.incidentActionBtn, { backgroundColor: colors.error }]}
+                        onPress={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm(`🗑️ Vorfall löschen\n\n"${incident.title}" wirklich löschen?`)) {
+                            deleteIncident(incident.id, incident.title);
+                          }
+                        }}
+                      >
+                        <Ionicons name="trash" size={16} color="#FFFFFF" />
+                      </TouchableOpacity>
                     )}
                   </View>
                 </TouchableOpacity>
