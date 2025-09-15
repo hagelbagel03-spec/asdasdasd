@@ -851,25 +851,49 @@ const MainApp = () => {
         status: userStatus 
       };
       
-      const response = await axios.put(`${API_URL}/api/auth/profile`, updates, config);
+      // Wenn Admin einen anderen Benutzer bearbeitet
+      if (editingUser && user?.role === 'admin') {
+        const userResponse = await axios.put(`${API_URL}/users/${editingUser.id}`, updates, config);
+        Alert.alert('✅ Erfolg', `Benutzer ${editingUser.username} wurde erfolgreich aktualisiert!`);
+        setEditingUser(null);
+        await loadUsersByStatus(); // Team-Liste neu laden
+      } else {
+        // Normales Profil-Update
+        const response = await axios.put(`${API_URL}/auth/profile`, updates, config);
+        await updateUser(response.data);
+        setUserStatus(response.data.status);
+        setProfileData({
+          username: response.data.username,
+          phone: response.data.phone || '',
+          service_number: response.data.service_number || '',
+          rank: response.data.rank || '',
+          department: response.data.department || ''
+        });
+        Alert.alert('✅ Erfolg', 'Profil wurde erfolgreich aktualisiert!');
+      }
       
-      Alert.alert('✅ Erfolg', 'Profil wurde erfolgreich aktualisiert!');
       setShowProfileModal(false);
-      
-      await updateUser(response.data);
-      
-      setUserStatus(response.data.status);
-      setProfileData({
-        username: response.data.username,
-        phone: response.data.phone || '',
-        service_number: response.data.service_number || '',
-        rank: response.data.rank || '',
-        department: response.data.department || ''
-      });
       
     } catch (error) {
       console.error('❌ Profile update error:', error);
       Alert.alert('❌ Fehler', 'Profil konnte nicht gespeichert werden');
+    }
+  };
+
+  const deleteUser = async (userId, username) => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+      
+      await axios.delete(`${API_URL}/users/${userId}`, config);
+      
+      Alert.alert('✅ Erfolg', `Benutzer ${username} wurde erfolgreich gelöscht!`);
+      await loadUsersByStatus(); // Team-Liste neu laden
+      
+    } catch (error) {
+      console.error('❌ User delete error:', error);
+      Alert.alert('❌ Fehler', 'Benutzer konnte nicht gelöscht werden');
     }
   };
 
