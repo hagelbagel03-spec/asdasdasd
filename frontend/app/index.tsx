@@ -918,7 +918,7 @@ const MainApp = () => {
         headers: { Authorization: `Bearer ${token}` }
       } : {};
       
-      await axios.delete(`${API_URL}/users/${userId}`, config);
+      await axios.delete(`${API_URL}/api/users/${userId}`, config);
       
       Alert.alert('✅ Erfolg', `Benutzer ${username} wurde erfolgreich gelöscht!`);
       await loadUsersByStatus(); // Team-Liste neu laden
