@@ -2695,6 +2695,144 @@ const MainApp = () => {
     </View>
   );
 
+  const renderDatabaseScreen = () => (
+    <View style={dynamicStyles.content}>
+      <View style={dynamicStyles.header}>
+        <Text style={dynamicStyles.title}>🗃️ Personendatenbank</Text>
+        <Text style={dynamicStyles.subtitle}>Gesuchte und vermisste Personen</Text>
+      </View>
+
+      {/* Statistiken */}
+      <View style={dynamicStyles.statsContainer}>
+        <View style={[dynamicStyles.statCard, { backgroundColor: colors.warning + '20', borderColor: colors.warning }]}>
+          <Text style={[dynamicStyles.statNumber, { color: colors.warning }]}>{personStats.missing_persons}</Text>
+          <Text style={dynamicStyles.statLabel}>Vermisst</Text>
+        </View>
+        <View style={[dynamicStyles.statCard, { backgroundColor: colors.error + '20', borderColor: colors.error }]}>
+          <Text style={[dynamicStyles.statNumber, { color: colors.error }]}>{personStats.wanted_persons}</Text>
+          <Text style={dynamicStyles.statLabel}>Gesucht</Text>
+        </View>
+        <View style={[dynamicStyles.statCard, { backgroundColor: colors.success + '20', borderColor: colors.success }]}>
+          <Text style={[dynamicStyles.statNumber, { color: colors.success }]}>{personStats.found_persons}</Text>
+          <Text style={dynamicStyles.statLabel}>Gefunden</Text>
+        </View>
+        <View style={[dynamicStyles.statCard, { backgroundColor: colors.primary + '20', borderColor: colors.primary }]}>
+          <Text style={[dynamicStyles.statNumber, { color: colors.primary }]}>{personStats.total_persons}</Text>
+          <Text style={dynamicStyles.statLabel}>Gesamt</Text>
+        </View>
+      </View>
+
+      {/* Add Person Button */}
+      <TouchableOpacity
+        style={[dynamicStyles.actionButton, { backgroundColor: colors.primary }]}
+        onPress={createNewPerson}
+      >
+        <Ionicons name="person-add" size={20} color="#FFFFFF" />
+        <Text style={[dynamicStyles.actionButtonText, { color: '#FFFFFF' }]}>
+          Person hinzufügen
+        </Text>
+      </TouchableOpacity>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {databaseLoading ? (
+          <View style={dynamicStyles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text style={dynamicStyles.loadingText}>Lade Personen...</Text>
+          </View>
+        ) : (
+          <>
+            {persons.length === 0 ? (
+              <View style={dynamicStyles.emptyState}>
+                <Ionicons name="people-outline" size={64} color={colors.textMuted} />
+                <Text style={dynamicStyles.emptyStateText}>Keine Personen in der Datenbank</Text>
+                <Text style={dynamicStyles.emptyStateSubtext}>
+                  Fügen Sie neue Personen hinzu, um sie zu verwalten
+                </Text>
+              </View>
+            ) : (
+              persons.map((person) => (
+                <TouchableOpacity
+                  key={person.id}
+                  style={[
+                    dynamicStyles.personCard,
+                    {
+                      borderLeftColor: person.status === 'vermisst' ? colors.warning :
+                                     person.status === 'gesucht' ? colors.error :
+                                     person.status === 'gefunden' ? colors.success : colors.primary
+                    }
+                  ]}
+                  onPress={() => editPerson(person)}
+                >
+                  <View style={dynamicStyles.personInfo}>
+                    <Text style={dynamicStyles.personName}>
+                      👤 {person.first_name} {person.last_name}
+                    </Text>
+                    <Text style={dynamicStyles.personDetails}>
+                      🏠 {person.address || 'Keine Adresse'}
+                      {person.age && ` • 🎂 ${person.age} Jahre`}
+                    </Text>
+                    <Text style={[
+                      dynamicStyles.personStatus,
+                      {
+                        color: person.status === 'vermisst' ? colors.warning :
+                               person.status === 'gesucht' ? colors.error :
+                               person.status === 'gefunden' ? colors.success : colors.primary
+                      }
+                    ]}>
+                      📊 Status: {person.status === 'vermisst' ? '⚠️ Vermisst' :
+                                  person.status === 'gesucht' ? '🚨 Gesucht' :
+                                  person.status === 'gefunden' ? '✅ Gefunden' :
+                                  '📋 ' + (person.status || 'Unbekannt')}
+                    </Text>
+                    {person.case_number && (
+                      <Text style={dynamicStyles.personCase}>
+                        🆔 Fall: #{person.case_number}
+                      </Text>
+                    )}
+                  </View>
+                  {user?.role === 'admin' && (
+                    <View style={dynamicStyles.personActions}>
+                      <TouchableOpacity
+                        style={dynamicStyles.editButton}
+                        onPress={(e) => {
+                          e.stopPropagation();
+                          editPerson(person);
+                        }}
+                      >
+                        <Ionicons name="create" size={16} color="#FFFFFF" />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={dynamicStyles.deleteButton}
+                        onPress={(e) => {
+                          e.stopPropagation();
+                          Alert.alert(
+                            '🗑️ Person archivieren',
+                            `${person.first_name} ${person.last_name} archivieren?`,
+                            [
+                              { text: 'Abbrechen', style: 'cancel' },
+                              {
+                                text: 'Archivieren',
+                                style: 'destructive',
+                                onPress: () => deletePerson(person.id, `${person.first_name} ${person.last_name}`)
+                              }
+                            ]
+                          );
+                        }}
+                      >
+                        <Ionicons name="archive" size={16} color="#FFFFFF" />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))
+            )}
+          </>
+        )}
+        <View style={{ height: 20 }} />
+      </ScrollView>
+    </View>
+  );
+
   const renderContent = () => {
     switch (activeTab) {
       case 'home': return renderHomeScreen();
