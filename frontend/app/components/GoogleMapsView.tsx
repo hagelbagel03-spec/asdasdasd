@@ -7,7 +7,7 @@ const GoogleMapsView = ({ incident, user, token }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [officers, setOfficers] = useState([]);
 
-  const API_URL = "http://212.227.57.238:8001/api";
+  const API_URL = "http://212.227.57.238:8001";
   const GOOGLE_MAPS_API_KEY = "AIzaSyA8mG8Y1pcJy_-1yNOhlTZ9gpnuVBmc0cw";
 
   // Load Google Maps Script
