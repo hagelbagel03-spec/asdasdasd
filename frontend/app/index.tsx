@@ -1456,7 +1456,7 @@ const MainApp = () => {
       justifyContent: 'center',
       alignItems: 'center',
     },
-    deleteButton: {
+    deletePersonButton: {
       backgroundColor: colors.error,
       borderRadius: 16,
       width: 32,
