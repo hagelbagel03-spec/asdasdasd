@@ -630,6 +630,8 @@ const MainApp = () => {
   // Database states
   const [persons, setPersons] = useState([]);  
   const [showPersonModal, setShowPersonModal] = useState(false);
+  const [showPersonDetailModal, setShowPersonDetailModal] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState(null);
   const [editingPerson, setEditingPerson] = useState(null);
   const [personFormData, setPersonFormData] = useState({
     first_name: '',
