@@ -4391,6 +4391,193 @@ Beispielinhalt:
           </ScrollView>
         </SafeAreaView>
       </Modal>
+
+      {/* Incident Detail Modal */}
+      <Modal
+        visible={showIncidentDetailModal}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowIncidentDetailModal(false)}
+      >
+        <SafeAreaView style={dynamicStyles.container}>
+          <View style={dynamicStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setShowIncidentDetailModal(false)}>
+              <Ionicons name="close" size={24} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={dynamicStyles.modalTitle}>🚨 Vorfall Details</Text>
+            <TouchableOpacity 
+              onPress={() => showIncidentOnMap(selectedIncident)}
+              style={dynamicStyles.editHeaderButton}
+            >
+              <Ionicons name="map" size={20} color={colors.primary} />
+              <Text style={[dynamicStyles.saveButtonText, { color: colors.primary }]}>Karte</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView style={dynamicStyles.modalContent}>
+            {selectedIncident && (
+              <>
+                <View style={dynamicStyles.detailCard}>
+                  <Text style={dynamicStyles.detailSectionTitle}>📋 Vorfall-Information</Text>
+                  
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>🚨 Titel:</Text>
+                    <Text style={dynamicStyles.detailValue}>{selectedIncident.title}</Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>📝 Beschreibung:</Text>
+                    <Text style={dynamicStyles.detailDescription}>{selectedIncident.description}</Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>📍 Adresse:</Text>
+                    <Text style={dynamicStyles.detailValue}>{selectedIncident.address}</Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>🕒 Gemeldet:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {new Date(selectedIncident.created_at).toLocaleDateString('de-DE', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={dynamicStyles.detailCard}>
+                  <Text style={dynamicStyles.detailSectionTitle}>📊 Status & Priorität</Text>
+                  
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>Status:</Text>
+                    <View style={[
+                      dynamicStyles.statusBadge,
+                      {
+                        backgroundColor: selectedIncident.status === 'open' ? colors.error + '20' :
+                                       selectedIncident.status === 'in_progress' ? colors.warning + '20' :
+                                       colors.success + '20',
+                        borderColor: selectedIncident.status === 'open' ? colors.error :
+                                   selectedIncident.status === 'in_progress' ? colors.warning :
+                                   colors.success
+                      }
+                    ]}>
+                      <Text style={[
+                        dynamicStyles.statusBadgeText,
+                        {
+                          color: selectedIncident.status === 'open' ? colors.error :
+                                 selectedIncident.status === 'in_progress' ? colors.warning :
+                                 colors.success
+                        }
+                      ]}>
+                        {selectedIncident.status === 'open' ? '🔴 Offen' :
+                         selectedIncident.status === 'in_progress' ? '🟡 In Bearbeitung' :
+                         '🟢 Abgeschlossen'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>⚡ Priorität:</Text>
+                    <Text style={[
+                      dynamicStyles.detailValue,
+                      {
+                        color: selectedIncident.priority === 'high' ? colors.error :
+                               selectedIncident.priority === 'medium' ? colors.warning :
+                               colors.success
+                      }
+                    ]}>
+                      {selectedIncident.priority === 'high' ? '🔴 HOCH' :
+                       selectedIncident.priority === 'medium' ? '🟡 MITTEL' :
+                       '🟢 NIEDRIG'}
+                    </Text>
+                  </View>
+
+                  {selectedIncident.assigned_to_name && (
+                    <View style={dynamicStyles.detailRow}>
+                      <Text style={dynamicStyles.detailLabel}>👤 Bearbeiter:</Text>
+                      <Text style={dynamicStyles.detailValue}>{selectedIncident.assigned_to_name}</Text>
+                    </View>
+                  )}
+                </View>
+
+                <View style={dynamicStyles.detailCard}>
+                  <Text style={dynamicStyles.detailSectionTitle}>🎯 Aktionen</Text>
+                  
+                  <TouchableOpacity
+                    style={[dynamicStyles.actionButton, { backgroundColor: colors.primary, marginBottom: 12 }]}
+                    onPress={() => showIncidentOnMap(selectedIncident)}
+                  >
+                    <Ionicons name="map" size={20} color="#FFFFFF" />
+                    <Text style={[dynamicStyles.actionButtonText, { color: '#FFFFFF' }]}>
+                      📍 Auf Karte zeigen
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[dynamicStyles.actionButton, { backgroundColor: colors.success, marginBottom: 12 }]}
+                    onPress={() => {
+                      if (window.confirm(`✅ Vorfall abschließen\n\n"${selectedIncident.title}" abschließen?`)) {
+                        completeIncident(selectedIncident.id, selectedIncident.title);
+                        setShowIncidentDetailModal(false);
+                      }
+                    }}
+                  >
+                    <Ionicons name="checkmark" size={20} color="#FFFFFF" />
+                    <Text style={[dynamicStyles.actionButtonText, { color: '#FFFFFF' }]}>
+                      ✅ Vorfall abschließen
+                    </Text>
+                  </TouchableOpacity>
+
+                  {user?.role === 'admin' && (
+                    <TouchableOpacity
+                      style={[dynamicStyles.actionButton, { backgroundColor: colors.error }]}
+                      onPress={() => {
+                        if (window.confirm(`🗑️ Vorfall löschen\n\n"${selectedIncident.title}" wirklich löschen?`)) {
+                          deleteIncident(selectedIncident.id, selectedIncident.title);
+                          setShowIncidentDetailModal(false);
+                        }
+                      }}
+                    >
+                      <Ionicons name="trash" size={20} color="#FFFFFF" />
+                      <Text style={[dynamicStyles.actionButtonText, { color: '#FFFFFF' }]}>
+                        🗑️ Vorfall löschen
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+
+                <View style={{ height: 40 }} />
+              </>
+            )}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Incident Map Modal */}
+      <Modal
+        visible={showIncidentMap}
+        animationType="slide"
+        presentationStyle="fullScreen"
+        onRequestClose={() => setShowIncidentMap(false)}
+      >
+        <SafeAreaView style={dynamicStyles.container}>
+          <View style={dynamicStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setShowIncidentMap(false)}>
+              <Ionicons name="close" size={24} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={dynamicStyles.modalTitle}>🗺️ {selectedIncident?.title || 'Vorfall auf Karte'}</Text>
+            <View style={{ width: 24 }} />
+          </View>
+          
+          {selectedIncident && (
+            <GoogleMapsView incident={selectedIncident} />
+          )}
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 };
