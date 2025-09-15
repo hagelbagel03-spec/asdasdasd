@@ -2452,7 +2452,54 @@ const MainApp = () => {
             ))}
           </>
         )}
-      </View>
+      </TouchableOpacity>
+
+      {/* Bürger Datenbank Category */}
+      <TouchableOpacity 
+        style={dynamicStyles.card}
+        onPress={() => setActiveTab('database')}
+        activeOpacity={0.8}
+      >
+        <View style={dynamicStyles.cardHeader}>
+          <Ionicons name="people" size={24} color={colors.secondary} />
+          <Text style={dynamicStyles.cardTitle}>Bürger Datenbank</Text>
+          <View style={dynamicStyles.cardHeaderRight}>
+            <View style={[dynamicStyles.statusBadge, { backgroundColor: colors.warning + '20', borderColor: colors.warning }]}>
+              <Text style={[dynamicStyles.statusBadgeText, { color: colors.warning }]}>
+                {personStats.missing_persons}
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={colors.textMuted} style={{ marginLeft: 8 }} />
+          </View>
+        </View>
+        
+        <View style={dynamicStyles.summaryRow}>
+          <View style={dynamicStyles.summaryItem}>
+            <Text style={[dynamicStyles.summaryNumber, { color: colors.warning }]}>
+              {personStats.missing_persons}
+            </Text>
+            <Text style={dynamicStyles.summaryLabel}>Vermisst</Text>
+          </View>
+          <View style={dynamicStyles.summaryItem}>
+            <Text style={[dynamicStyles.summaryNumber, { color: colors.error }]}>
+              {personStats.wanted_persons}
+            </Text>
+            <Text style={dynamicStyles.summaryLabel}>Gesucht</Text>
+          </View>
+          <View style={dynamicStyles.summaryItem}>
+            <Text style={[dynamicStyles.summaryNumber, { color: colors.success }]}>
+              {personStats.found_persons}
+            </Text>
+            <Text style={dynamicStyles.summaryLabel}>Gefunden</Text>
+          </View>
+          <View style={dynamicStyles.summaryItem}>
+            <Text style={[dynamicStyles.summaryNumber, { color: colors.primary }]}>
+              {personStats.total_persons}
+            </Text>
+            <Text style={dynamicStyles.summaryLabel}>Gesamt</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
 
       <View style={{ height: 20 }} />
     </ScrollView>
