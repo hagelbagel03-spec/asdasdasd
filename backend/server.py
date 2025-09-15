@@ -162,6 +162,57 @@ class LocationUpdate(BaseModel):
     location: Dict[str, float]
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
+class Person(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    first_name: str
+    last_name: str
+    address: Optional[str] = None
+    age: Optional[int] = None
+    birth_date: Optional[str] = None  # Format: YYYY-MM-DD
+    status: str  # "gesucht", "vermisst", "gefunden", "archiviert"
+    description: Optional[str] = None
+    last_seen_location: Optional[str] = None
+    last_seen_date: Optional[str] = None
+    contact_info: Optional[str] = None
+    case_number: Optional[str] = None
+    priority: str = "medium"  # "low", "medium", "high"
+    photo: Optional[str] = None  # base64 encoded image
+    created_by: str  # user_id
+    created_by_name: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    is_active: bool = True
+
+class PersonCreate(BaseModel):
+    first_name: str
+    last_name: str
+    address: Optional[str] = None
+    age: Optional[int] = None
+    birth_date: Optional[str] = None
+    status: str = "vermisst"
+    description: Optional[str] = None
+    last_seen_location: Optional[str] = None
+    last_seen_date: Optional[str] = None
+    contact_info: Optional[str] = None
+    case_number: Optional[str] = None
+    priority: str = "medium"
+    photo: Optional[str] = None
+
+class PersonUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    address: Optional[str] = None
+    age: Optional[int] = None
+    birth_date: Optional[str] = None
+    status: Optional[str] = None
+    description: Optional[str] = None
+    last_seen_location: Optional[str] = None
+    last_seen_date: Optional[str] = None
+    contact_info: Optional[str] = None
+    case_number: Optional[str] = None
+    priority: Optional[str] = None
+    photo: Optional[str] = None
+
 # Security functions
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a password against its hash"""
