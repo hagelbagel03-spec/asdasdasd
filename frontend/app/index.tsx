@@ -2788,22 +2788,22 @@ const MainApp = () => {
       </View>
 
       {/* Statistiken */}
-      <View style={dynamicStyles.statsContainer}>
-        <View style={[dynamicStyles.statCard, { backgroundColor: colors.warning + '20', borderColor: colors.warning }]}>
-          <Text style={[dynamicStyles.statNumber, { color: colors.warning }]}>{personStats.missing_persons}</Text>
-          <Text style={dynamicStyles.statLabel}>Vermisst</Text>
+      <View style={dynamicStyles.dbStatsContainer}>
+        <View style={[dynamicStyles.dbStatCard, { backgroundColor: colors.warning + '20', borderColor: colors.warning }]}>
+          <Text style={[dynamicStyles.dbStatNumber, { color: colors.warning }]}>{personStats.missing_persons}</Text>
+          <Text style={dynamicStyles.dbStatLabel}>Vermisst</Text>
         </View>
-        <View style={[dynamicStyles.statCard, { backgroundColor: colors.error + '20', borderColor: colors.error }]}>
-          <Text style={[dynamicStyles.statNumber, { color: colors.error }]}>{personStats.wanted_persons}</Text>
-          <Text style={dynamicStyles.statLabel}>Gesucht</Text>
+        <View style={[dynamicStyles.dbStatCard, { backgroundColor: colors.error + '20', borderColor: colors.error }]}>
+          <Text style={[dynamicStyles.dbStatNumber, { color: colors.error }]}>{personStats.wanted_persons}</Text>
+          <Text style={dynamicStyles.dbStatLabel}>Gesucht</Text>
         </View>
-        <View style={[dynamicStyles.statCard, { backgroundColor: colors.success + '20', borderColor: colors.success }]}>
-          <Text style={[dynamicStyles.statNumber, { color: colors.success }]}>{personStats.found_persons}</Text>
-          <Text style={dynamicStyles.statLabel}>Gefunden</Text>
+        <View style={[dynamicStyles.dbStatCard, { backgroundColor: colors.success + '20', borderColor: colors.success }]}>
+          <Text style={[dynamicStyles.dbStatNumber, { color: colors.success }]}>{personStats.found_persons}</Text>
+          <Text style={dynamicStyles.dbStatLabel}>Gefunden</Text>
         </View>
-        <View style={[dynamicStyles.statCard, { backgroundColor: colors.primary + '20', borderColor: colors.primary }]}>
-          <Text style={[dynamicStyles.statNumber, { color: colors.primary }]}>{personStats.total_persons}</Text>
-          <Text style={dynamicStyles.statLabel}>Gesamt</Text>
+        <View style={[dynamicStyles.dbStatCard, { backgroundColor: colors.primary + '20', borderColor: colors.primary }]}>
+          <Text style={[dynamicStyles.dbStatNumber, { color: colors.primary }]}>{personStats.total_persons}</Text>
+          <Text style={dynamicStyles.dbStatLabel}>Gesamt</Text>
         </View>
       </View>
 
