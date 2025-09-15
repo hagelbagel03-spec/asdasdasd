@@ -1249,6 +1249,106 @@ const MainApp = () => {
     setShowIncidentMap(true);
   };
 
+  // Private Messaging Functions
+  const sendPrivateMessage = async () => {
+    if (!privateMessage.trim() || !selectedRecipient) return;
+
+    setSendingPrivateMessage(true);
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+
+      const messageData = {
+        content: privateMessage,
+        recipient_id: selectedRecipient.id,
+        channel: "private",
+        message_type: "text"
+      };
+
+      await axios.post(`${API_URL}/api/messages`, messageData, config);
+      
+      // Benachrichtigung erstellen
+      await createNotification(
+        selectedRecipient.id,
+        `📩 Private Nachricht von ${user.username}`,
+        privateMessage.substring(0, 100) + (privateMessage.length > 100 ? '...' : ''),
+        'private_message'
+      );
+
+      window.alert(`✅ Nachricht gesendet\n\nNachricht an ${selectedRecipient.username} erfolgreich gesendet!`);
+      setPrivateMessage('');
+      setShowPrivateMessageModal(false);
+
+    } catch (error) {
+      console.error('❌ Private message error:', error);
+      window.alert(`❌ Fehler\n\nNachricht konnte nicht gesendet werden.`);
+    } finally {
+      setSendingPrivateMessage(false);
+    }
+  };
+
+  const openPrivateMessage = (recipient) => {
+    setSelectedRecipient(recipient);
+    setPrivateMessage('');
+    setShowPrivateMessageModal(true);
+  };
+
+  // Notification Functions
+  const createNotification = async (recipientId, title, content, type) => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+
+      const notificationData = {
+        recipient_id: recipientId,
+        title: title,
+        content: content,
+        type: type,
+        sender_id: user.id,
+        sender_name: user.username
+      };
+
+      await axios.post(`${API_URL}/api/notifications`, notificationData, config);
+      console.log('🔔 Benachrichtigung erstellt:', title);
+
+    } catch (error) {
+      console.error('❌ Notification error:', error);
+    }
+  };
+
+  const loadNotifications = async () => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+
+      const response = await axios.get(`${API_URL}/api/notifications`, config);
+      setNotifications(response.data);
+      
+      const unread = response.data.filter(n => !n.is_read).length;
+      setUnreadNotifications(unread);
+
+    } catch (error) {
+      console.error('❌ Error loading notifications:', error);
+    }
+  };
+
+  const markNotificationAsRead = async (notificationId) => {
+    try {
+      const config = token ? {
+        headers: { Authorization: `Bearer ${token}` }
+      } : {};
+
+      await axios.put(`${API_URL}/api/notifications/${notificationId}/read`, {}, config);
+      await loadNotifications(); // Reload notifications
+
+    } catch (error) {
+      console.error('❌ Error marking notification as read:', error);
+    }
+  };
+
   const submitIncident = async () => {
     if (!incidentFormData.title || !incidentFormData.description) {
       Alert.alert('⚠️ Fehler', 'Bitte füllen Sie alle Pflichtfelder aus');
