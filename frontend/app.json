@@ -1,42 +1,76 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "Stadtwache",
+    "slug": "stadtwache-schwelm", 
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "frontend",
+    "icon": "./assets/icon.png",
+    "scheme": "stadtwache",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "owner": "stadtwache-schwelm",
+    "description": "Sicherheitsbehörde Schwelm - Professional Security Solution",
+    "primaryColor": "#1E3A8A",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1E3A8A"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stadtwache.schwelm",
+      "buildNumber": "1"
     },
     "android": {
+      "package": "com.stadtwache.schwelm",
+      "versionCode": 1,
+      "compileSdkVersion": 34,
+      "targetSdkVersion": 34,
+      "buildToolsVersion": "34.0.0",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1E3A8A"
       },
-      "edgeToEdgeEnabled": true
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router",
       [
-        "expo-splash-screen",
+        "expo-build-properties",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#000"
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
+          }
         }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "stadtwache-schwelm-2024"
+      },
+      "serverUrl": "http://212.227.57.238:3000"
+    },
+    "developmentClient": {
+      "silentLaunch": true
     }
   }
 }
