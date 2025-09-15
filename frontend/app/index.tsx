@@ -885,7 +885,7 @@ const MainApp = () => {
       
       // Wenn Admin einen anderen Benutzer bearbeitet
       if (editingUser && user?.role === 'admin') {
-        const userResponse = await axios.put(`${API_URL}/users/${editingUser.id}`, updates, config);
+        const userResponse = await axios.put(`${API_URL}/api/users/${editingUser.id}`, updates, config);
         Alert.alert('✅ Erfolg', `Benutzer ${editingUser.username} wurde erfolgreich aktualisiert!`);
         setEditingUser(null);
         await loadUsersByStatus(); // Team-Liste neu laden
