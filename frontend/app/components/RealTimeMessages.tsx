@@ -80,7 +80,7 @@ const RealTimeMessages: React.FC<RealTimeMessagesProps> = ({ user, token, select
   const [currentChannel, setCurrentChannel] = useState(selectedChannel);
   const scrollViewRef = useRef<ScrollView>(null);
   
-  const API_URL = "http://212.227.57.238:8001/api";
+  const API_URL = "http://212.227.57.238:8001";
 
   // Channel options with modern icons
   const channels = [
