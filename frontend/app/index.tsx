@@ -1836,6 +1836,27 @@ const MainApp = () => {
       marginTop: 4,
     },
 
+    // Incident Action Button Styles
+    incidentActions: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginLeft: 12,
+      gap: 8,
+    },
+    incidentActionBtn: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3,
+      elevation: 3,
+    },
+
     // Search Styles
     searchContainer: {
       marginBottom: 16,
