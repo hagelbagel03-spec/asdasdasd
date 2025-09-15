@@ -627,6 +627,11 @@ const MainApp = () => {
   const [teamLoading, setTeamLoading] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   
+  // Incidents states
+  const [showIncidentsScreen, setShowIncidentsScreen] = useState(false);
+  const [incidents, setIncidents] = useState([]);
+  const [incidentsLoading, setIncidentsLoading] = useState(false);
+  
   // Database states
   const [persons, setPersons] = useState([]);  
   const [showPersonModal, setShowPersonModal] = useState(false);
