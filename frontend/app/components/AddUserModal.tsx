@@ -66,7 +66,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ visible, onClose, onUserAdd
   const [loading, setLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState(false);
 
-  const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL + "/api" || "https://german-fixer.preview.emergentagent.com/api";
 
   const resetForm = () => {
     setFormData({
