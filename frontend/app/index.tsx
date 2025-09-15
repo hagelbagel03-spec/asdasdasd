@@ -3711,18 +3711,16 @@ Beispielinhalt:
             <Text style={dynamicStyles.modalTitle}>
               👤 Person Details
             </Text>
-            {user?.role === 'admin' && (
-              <TouchableOpacity 
-                onPress={() => {
-                  setShowPersonDetailModal(false);
-                  editPerson(selectedPerson);
-                }}
-                style={dynamicStyles.editHeaderButton}
-              >
-                <Ionicons name="create" size={20} color={colors.primary} />
-                <Text style={[dynamicStyles.saveButtonText, { color: colors.primary }]}>Bearbeiten</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity 
+              onPress={() => {
+                setShowPersonDetailModal(false);
+                editPerson(selectedPerson);
+              }}
+              style={dynamicStyles.editHeaderButton}
+            >
+              <Ionicons name="create" size={20} color={colors.primary} />
+              <Text style={[dynamicStyles.saveButtonText, { color: colors.primary }]}>Bearbeiten</Text>
+            </TouchableOpacity>
           </View>
 
           <ScrollView style={dynamicStyles.modalContent} showsVerticalScrollIndicator={false}>
