@@ -997,7 +997,7 @@ const MainApp = () => {
       } else {
         // Create new person
         console.log('📝 Creating new person');
-        await axios.post(`${API_URL}/persons`, personData, config);
+        await axios.post(`${API_URL}/api/persons`, personData, config);
         Alert.alert('✅ Erfolg', 'Person wurde erfolgreich hinzugefügt!');
       }
 
