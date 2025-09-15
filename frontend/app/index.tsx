@@ -694,8 +694,52 @@ const MainApp = () => {
         rank: user.rank || '',
         department: user.department || ''
       });
+      
+      // Starte automatische Aktualisierung
+      startAutoRefresh();
     }
+    
+    return () => {
+      stopAutoRefresh();
+    };
   }, [user]);
+
+  // Auto-refresh Setup
+  const [autoRefreshInterval, setAutoRefreshInterval] = useState(null);
+
+  const startAutoRefresh = () => {
+    // Verhindere mehrere Intervalle
+    if (autoRefreshInterval) {
+      clearInterval(autoRefreshInterval);
+    }
+    
+    // Aktualisiere alle 30 Sekunden
+    const interval = setInterval(() => {
+      console.log('🔄 Auto-Aktualisierung der Daten...');
+      
+      // Aktuelle Tab-Daten aktualisieren
+      if (activeTab === 'home') {
+        loadData();
+      } else if (activeTab === 'team') {
+        loadUsersByStatus();
+      } else if (activeTab === 'database') {
+        loadPersons();
+        loadPersonStats();
+      } else if (activeTab === 'berichte') {
+        loadReports();
+      }
+    }, 30000); // 30 Sekunden
+
+    setAutoRefreshInterval(interval);
+  };
+
+  const stopAutoRefresh = () => {
+    if (autoRefreshInterval) {
+      clearInterval(autoRefreshInterval);
+      setAutoRefreshInterval(null);
+      console.log('⏹️ Auto-Aktualisierung gestoppt');
+    }
+  };
 
   // Load reports data
   const loadReports = async () => {
