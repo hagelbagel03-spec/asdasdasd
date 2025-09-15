@@ -1513,14 +1513,14 @@ const MainApp = () => {
       alignItems: 'center',
     },
 
-    // Statistics Cards  
-    statsContainer: {
+    // Database Statistics Cards  
+    dbStatsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginBottom: 20,
       flexWrap: 'wrap',
     },
-    statCard: {
+    dbStatCard: {
       flex: 1,
       backgroundColor: colors.cardBackground,
       borderRadius: 12,
@@ -1530,12 +1530,12 @@ const MainApp = () => {
       borderWidth: 2,
       minWidth: 70,
     },
-    statNumber: {
+    dbStatNumber: {
       fontSize: 20,
       fontWeight: '900',
       marginBottom: 4,
     },
-    statLabel: {
+    dbStatLabel: {
       fontSize: 11,
       color: colors.textMuted,
       textAlign: 'center',
