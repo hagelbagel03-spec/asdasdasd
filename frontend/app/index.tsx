@@ -180,8 +180,8 @@ const BACKEND_BASE_URL = "http://212.227.57.238:8001";
       setToken(access_token);
       setUser(userData);
       
-      await AsyncStorage.setItem('token', access_token);
-      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      await AsyncStorage.setItem('stadtwache_token', access_token);
+      await AsyncStorage.setItem('stadtwache_user', JSON.stringify(userData));
       
       axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
       return { success: true };
