@@ -548,7 +548,7 @@ const IncidentMapModal = ({ visible, onClose, incident }) => {
           <View style={{ width: 40 }} />
         </View>
 
-        <GoogleMapsView incident={incident} user={user} token={token} />
+        <GoogleMapsView incident={incident} />
 
         {incident && (
           <View style={dynamicStyles.incidentInfo}>
