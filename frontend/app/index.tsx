@@ -625,6 +625,7 @@ const MainApp = () => {
   // Team states
   const [usersByStatus, setUsersByStatus] = useState({});
   const [teamLoading, setTeamLoading] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
   
   const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL + "/api" || "https://german-fixer.preview.emergentagent.com/api";
   
