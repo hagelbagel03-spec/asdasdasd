@@ -260,16 +260,16 @@ const RealTimeMessages: React.FC<RealTimeMessagesProps> = ({ user, token, select
     // Modern Channel Tabs
     channelTabs: {
       flexDirection: 'row',
-      backgroundColor: colors.surface,
+      backgroundColor: colors.background,
       paddingHorizontal: 16,
-      paddingVertical: 12,
-      borderBottomWidth: 1,
+      paddingVertical: 16,
+      borderBottomWidth: 2,
       borderBottomColor: colors.border,
-      elevation: 2,
-      shadowColor: colors.shadow,
+      elevation: 4,
+      shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
+      shadowOpacity: 0.15,
+      shadowRadius: 6,
     },
     channelTab: {
       flexDirection: 'row',
