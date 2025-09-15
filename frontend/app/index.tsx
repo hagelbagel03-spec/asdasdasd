@@ -765,6 +765,10 @@ const MainApp = () => {
     if (activeTab === 'berichte') {
       loadReports();
     }
+    if (activeTab === 'database') {
+      loadPersons();
+      loadPersonStats();
+    }
   }, [activeTab]);
 
   const loadData = async () => {
