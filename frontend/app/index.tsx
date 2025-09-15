@@ -2887,7 +2887,7 @@ const MainApp = () => {
                         <Ionicons name="create" size={16} color="#FFFFFF" />
                       </TouchableOpacity>
                       <TouchableOpacity
-                        style={dynamicStyles.deleteButton}
+                        style={dynamicStyles.deletePersonButton}
                         onPress={(e) => {
                           e.stopPropagation();
                           Alert.alert(
