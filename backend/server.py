@@ -670,6 +670,98 @@ async def update_report(report_id: str, updated_data: ReportCreate, current_user
     updated_report = await db.reports.find_one({"id": report_id})
     return Report(**updated_report)
 
+# Person Database Endpoints
+@api_router.post("/persons", response_model=Person)
+async def create_person(person_data: PersonCreate, current_user: User = Depends(get_current_user)):
+    """Erstelle eine neue Person in der Datenbank"""
+    # Only police and admin can create person entries
+    if current_user.role not in [UserRole.POLICE, UserRole.ADMIN]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    person_dict = person_data.dict()
+    person_dict['created_by'] = current_user.id
+    person_dict['created_by_name'] = current_user.username
+    person_obj = Person(**person_dict)
+    
+    await db.persons.insert_one(person_obj.dict())
+    
+    # Notify all users about new person entry
+    await sio.emit('new_person', person_obj.dict())
+    
+    return person_obj
+
+@api_router.get("/persons", response_model=List[Person])
+async def get_persons(status: Optional[str] = None, current_user: User = Depends(get_current_user)):
+    """Lade alle Personen oder nach Status gefiltert"""
+    query = {"is_active": True}
+    if status:
+        query["status"] = status
+    
+    persons = await db.persons.find(query).sort("created_at", -1).to_list(100)
+    return [Person(**person) for person in persons]
+
+@api_router.get("/persons/{person_id}", response_model=Person)
+async def get_person(person_id: str, current_user: User = Depends(get_current_user)):
+    """Lade eine spezifische Person"""
+    person = await db.persons.find_one({"id": person_id})
+    if not person:
+        raise HTTPException(status_code=404, detail="Person not found")
+    return Person(**person)
+
+@api_router.put("/persons/{person_id}", response_model=Person)
+async def update_person(person_id: str, updates: PersonUpdate, current_user: User = Depends(get_current_user)):
+    """Aktualisiere Person-Daten"""
+    # Only police and admin can update person entries
+    if current_user.role not in [UserRole.POLICE, UserRole.ADMIN]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    update_data = {k: v for k, v in updates.dict().items() if v is not None}
+    update_data['updated_at'] = datetime.utcnow()
+    
+    result = await db.persons.update_one({"id": person_id}, {"$set": update_data})
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Person not found")
+    
+    person = await db.persons.find_one({"id": person_id})
+    person_obj = Person(**person)
+    
+    # Notify about person update
+    await sio.emit('person_updated', person_obj.dict())
+    
+    return person_obj
+
+@api_router.delete("/persons/{person_id}")
+async def delete_person(person_id: str, current_user: User = Depends(get_current_user)):
+    """Lösche eine Person (nur Admin)"""
+    if current_user.role != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    result = await db.persons.update_one(
+        {"id": person_id}, 
+        {"$set": {"is_active": False, "updated_at": datetime.utcnow()}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Person not found")
+    
+    return {"status": "success", "message": "Person archived"}
+
+@api_router.get("/persons/stats/overview")
+async def get_person_stats(current_user: User = Depends(get_current_user)):
+    """Statistiken über Personen-Datenbank"""
+    total_persons = await db.persons.count_documents({"is_active": True})
+    missing_persons = await db.persons.count_documents({"is_active": True, "status": "vermisst"})
+    wanted_persons = await db.persons.count_documents({"is_active": True, "status": "gesucht"})
+    found_persons = await db.persons.count_documents({"is_active": True, "status": "gefunden"})
+    
+    return {
+        "total_persons": total_persons,
+        "missing_persons": missing_persons,
+        "wanted_persons": wanted_persons,
+        "found_persons": found_persons
+    }
+
 @api_router.post("/incidents", response_model=Incident)
 async def create_incident(incident_data: IncidentCreate, current_user: User = Depends(get_current_user)):
     incident_dict = incident_data.dict()
