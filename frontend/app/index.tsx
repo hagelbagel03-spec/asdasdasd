@@ -627,6 +627,34 @@ const MainApp = () => {
   const [teamLoading, setTeamLoading] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   
+  // Database states
+  const [persons, setPersons] = useState([]);  
+  const [showPersonModal, setShowPersonModal] = useState(false);
+  const [editingPerson, setEditingPerson] = useState(null);
+  const [personFormData, setPersonFormData] = useState({
+    first_name: '',
+    last_name: '',
+    address: '',
+    age: '',
+    birth_date: '',
+    status: 'vermisst',
+    description: '',
+    last_seen_location: '',
+    last_seen_date: '',
+    contact_info: '',
+    case_number: '',
+    priority: 'medium',
+    photo: ''
+  });
+  const [personStats, setPersonStats] = useState({
+    total_persons: 0,
+    missing_persons: 0,
+    wanted_persons: 0,
+    found_persons: 0
+  });
+  const [savingPerson, setSavingPerson] = useState(false);
+  const [databaseLoading, setDatabaseLoading] = useState(false);
+  
   const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL + "/api" || "https://german-fixer.preview.emergentagent.com/api";
   
   useEffect(() => {
