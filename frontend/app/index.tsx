@@ -3588,6 +3588,195 @@ Beispielinhalt:
           </KeyboardAvoidingView>
         </SafeAreaView>
       </Modal>
+
+      {/* Person Detail Modal - Nur lesen */}
+      <Modal
+        visible={showPersonDetailModal}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowPersonDetailModal(false)}
+      >
+        <SafeAreaView style={dynamicStyles.container}>
+          <View style={dynamicStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setShowPersonDetailModal(false)}>
+              <Ionicons name="close" size={24} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={dynamicStyles.modalTitle}>
+              👤 Person Details
+            </Text>
+            {user?.role === 'admin' && (
+              <TouchableOpacity 
+                onPress={() => {
+                  setShowPersonDetailModal(false);
+                  editPerson(selectedPerson);
+                }}
+                style={dynamicStyles.editHeaderButton}
+              >
+                <Ionicons name="create" size={20} color={colors.primary} />
+                <Text style={[dynamicStyles.saveButtonText, { color: colors.primary }]}>Bearbeiten</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <ScrollView style={dynamicStyles.modalContent} showsVerticalScrollIndicator={false}>
+            {selectedPerson && (
+              <>
+                <View style={dynamicStyles.detailCard}>
+                  <Text style={dynamicStyles.detailSectionTitle}>📋 Grunddaten</Text>
+                  
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>👤 Name:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {selectedPerson.first_name} {selectedPerson.last_name}
+                    </Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>🏠 Adresse:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {selectedPerson.address || 'Nicht angegeben'}
+                    </Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>🎂 Alter:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {selectedPerson.age ? `${selectedPerson.age} Jahre` : 'Nicht angegeben'}
+                    </Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>📅 Geburtsdatum:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {selectedPerson.birth_date || 'Nicht angegeben'}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={dynamicStyles.detailCard}>
+                  <Text style={dynamicStyles.detailSectionTitle}>📊 Status</Text>
+                  
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>Status:</Text>
+                    <View style={[
+                      dynamicStyles.statusBadge,
+                      {
+                        backgroundColor: selectedPerson.status === 'vermisst' ? colors.warning + '20' :
+                                       selectedPerson.status === 'gesucht' ? colors.error + '20' :
+                                       selectedPerson.status === 'gefunden' ? colors.success + '20' : colors.primary + '20',
+                        borderColor: selectedPerson.status === 'vermisst' ? colors.warning :
+                                   selectedPerson.status === 'gesucht' ? colors.error :
+                                   selectedPerson.status === 'gefunden' ? colors.success : colors.primary
+                      }
+                    ]}>
+                      <Text style={[
+                        dynamicStyles.statusBadgeText,
+                        {
+                          color: selectedPerson.status === 'vermisst' ? colors.warning :
+                                 selectedPerson.status === 'gesucht' ? colors.error :
+                                 selectedPerson.status === 'gefunden' ? colors.success : colors.primary
+                        }
+                      ]}>
+                        {selectedPerson.status === 'vermisst' ? '⚠️ Vermisst' :
+                         selectedPerson.status === 'gesucht' ? '🚨 Gesucht' :
+                         selectedPerson.status === 'gefunden' ? '✅ Gefunden' :
+                         '📋 ' + (selectedPerson.status || 'Unbekannt')}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>⚡ Priorität:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {selectedPerson.priority === 'low' ? '🟢 Niedrig' :
+                       selectedPerson.priority === 'medium' ? '🟡 Mittel' :
+                       selectedPerson.priority === 'high' ? '🔴 Hoch' : 'Mittel'}
+                    </Text>
+                  </View>
+
+                  {selectedPerson.case_number && (
+                    <View style={dynamicStyles.detailRow}>
+                      <Text style={dynamicStyles.detailLabel}>🆔 Fallnummer:</Text>
+                      <Text style={dynamicStyles.detailValue}>#{selectedPerson.case_number}</Text>
+                    </View>
+                  )}
+                </View>
+
+                {(selectedPerson.last_seen_location || selectedPerson.last_seen_date) && (
+                  <View style={dynamicStyles.detailCard}>
+                    <Text style={dynamicStyles.detailSectionTitle}>📍 Zuletzt gesehen</Text>
+                    
+                    {selectedPerson.last_seen_location && (
+                      <View style={dynamicStyles.detailRow}>
+                        <Text style={dynamicStyles.detailLabel}>📍 Ort:</Text>
+                        <Text style={dynamicStyles.detailValue}>{selectedPerson.last_seen_location}</Text>
+                      </View>
+                    )}
+
+                    {selectedPerson.last_seen_date && (
+                      <View style={dynamicStyles.detailRow}>
+                        <Text style={dynamicStyles.detailLabel}>📅 Datum:</Text>
+                        <Text style={dynamicStyles.detailValue}>{selectedPerson.last_seen_date}</Text>
+                      </View>
+                    )}
+                  </View>
+                )}
+
+                {selectedPerson.description && (
+                  <View style={dynamicStyles.detailCard}>
+                    <Text style={dynamicStyles.detailSectionTitle}>📝 Beschreibung</Text>
+                    <Text style={dynamicStyles.detailDescription}>{selectedPerson.description}</Text>
+                  </View>
+                )}
+
+                {selectedPerson.contact_info && (
+                  <View style={dynamicStyles.detailCard}>
+                    <Text style={dynamicStyles.detailSectionTitle}>📞 Kontaktinformationen</Text>
+                    <Text style={dynamicStyles.detailDescription}>{selectedPerson.contact_info}</Text>
+                  </View>
+                )}
+
+                <View style={dynamicStyles.detailCard}>
+                  <Text style={dynamicStyles.detailSectionTitle}>ℹ️ Fallverwaltung</Text>
+                  
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>👮 Erstellt von:</Text>
+                    <Text style={dynamicStyles.detailValue}>{selectedPerson.created_by_name}</Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>📅 Erstellt am:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {new Date(selectedPerson.created_at).toLocaleDateString('de-DE', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </Text>
+                  </View>
+
+                  <View style={dynamicStyles.detailRow}>
+                    <Text style={dynamicStyles.detailLabel}>📝 Letzte Änderung:</Text>
+                    <Text style={dynamicStyles.detailValue}>
+                      {new Date(selectedPerson.updated_at).toLocaleDateString('de-DE', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={{ height: 40 }} />
+              </>
+            )}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 };
